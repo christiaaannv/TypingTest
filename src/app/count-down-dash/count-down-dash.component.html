@@ -1,0 +1,26 @@
+
+<div id="count-down-dash">
+  
+<div class="timer">
+    <h3>Timer</h3>
+    <app-count-down></app-count-down>
+
+</div>    
+
+<section class="cout-down-section">
+    <button class="count-down-btn" mat-raised-button (click)="onClick_updateTimer(0)" >{{timerService.countDownTimes[0]}} min</button>
+    <button class="count-down-btn" mat-raised-button (click)="onClick_updateTimer(1)" >{{timerService.countDownTimes[1]}} min</button>
+    <button class="count-down-btn" mat-raised-button (click)="onClick_updateTimer(2)" >{{timerService.countDownTimes[2]}} min</button>
+    <button class="count-down-btn" mat-raised-button>
+        <mat-icon aria-hidden="false" aria-label="Example home icon">autorenew</mat-icon>
+    </button>
+
+</section>
+
+    <!--Comment Start and Stop Buttons (to be depreciated) -->
+<section class="cout-down-section">
+    <button class="count-down-btn" mat-raised-button (click)="onClick_startTimer()" [disabled]='timerService.isTimerRunning'>Start</button>
+    <button class="count-down-btn" mat-raised-button (click)="onClick_stopTimer()" [disabled]='!timerService.isTimerRunning' >Stop</button>
+</section>
+</div>
+
