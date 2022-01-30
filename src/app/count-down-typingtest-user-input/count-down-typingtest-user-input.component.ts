@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TypingTestService } from '../services/typingTest/typing-test.service';
+import { TimerService } from '../services/timerService/timer.service';
 
 @Component({
   selector: 'app-count-down-typingtest-user-input',
@@ -8,17 +9,15 @@ import { TypingTestService } from '../services/typingTest/typing-test.service';
 })
 export class CountDownTypingtestUserInputComponent implements OnInit {
 
+  public timerService: TimerService; 
+
   constructor(public typingTestService: TypingTestService) { }
 
   public onInput_UserInput(_value:any){
 
-    
-    console.log("Timer Status: "+this.typingTestService.getTimeStatus());
-    console.log("Current Word: "+this.typingTestService.currentWordNum);
-    if(this.typingTestService.currentWordNum == 0 && this.typingTestService.getTimeStatus() == false){
-      this.typingTestService.startTimer(); 
+    if(this.typingTestService.currentWordNum == 0 && this.timerService.isTimerRunning == false){
+      this.timerService.startTimer(); 
     }
-
     if(_value.value == " " ||_value.value == "\n" ){
       _value.value = ""; 
       return; 
@@ -29,15 +28,12 @@ export class CountDownTypingtestUserInputComponent implements OnInit {
       _value.value = ""; 
       this.typingTestService.moveToNextWord(); 
       this.typingTestService.currentWordNum++; 
-    }
-    
+    }  
     this.typingTestService.currentWord.next(_value.value); 
-    console.log(_value.value); 
   }
-
   ngOnInit(): void {
-
-
+    //Get TimerService Instance 
+    this.timerService = this.typingTestService.getTimerServiceInstatiation(); 
   }
 
 

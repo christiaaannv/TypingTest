@@ -11,8 +11,8 @@
     <button class="count-down-btn" mat-raised-button (click)="onClick_updateTimer(0)" >{{timerService.countDownTimes[0]}} min</button>
     <button class="count-down-btn" mat-raised-button (click)="onClick_updateTimer(1)" >{{timerService.countDownTimes[1]}} min</button>
     <button class="count-down-btn" mat-raised-button (click)="onClick_updateTimer(2)" >{{timerService.countDownTimes[2]}} min</button>
-    <button class="count-down-btn" mat-raised-button>
-        <mat-icon aria-hidden="false" aria-label="Example home icon">autorenew</mat-icon>
+    <button class="count-down-btn" mat-raised-button (click)="onClick_reset()"> R
+       <!-- <mat-icon aria-hidden="false" aria-label="Example home icon">R</mat-icon> -->
     </button>
 
 </section>

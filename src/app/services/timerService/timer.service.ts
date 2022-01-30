@@ -16,7 +16,6 @@ export class TimerService {
   public countDownTimes = [1,2,5]; 
   public isTimerRunning = false; 
 
-
   constructor() { }
   //Updates the Total time to countdown
   public updateTimeCount(_newTime:any){
@@ -25,7 +24,9 @@ export class TimerService {
     this.timerTotalAmount = this.countDownTimes[_newTime]*60; 
     this.restartCountDownTime(); 
   }
-  public async startTimer(_from: any){  
+  public startTimer(){  
+
+
     //unsubscribe if there is any previous scriptions
     try{
       this.timerSubscription.unsubscribe();  
@@ -34,7 +35,11 @@ export class TimerService {
     console.log("Time Started"); 
     this.isTimerRunning = true; 
     this.endDate = new Date(new Date().getTime() + this.timerCurrentAmount*1000); 
-    this.timerSubscription = interval(100).subscribe( x => {this.countDown(); console.log(_from)});  
+    this.timerSubscription = interval(100).subscribe( x => 
+      {
+        this.countDown();
+        //console.log(_from)
+      });  
   }
   public stopTimer(){
     try{
@@ -43,8 +48,9 @@ export class TimerService {
     
     this.isTimerRunning = false;     
   }
-  private restartCountDownTime(){
+  public restartCountDownTime(){
     this.timerCurrentAmount = this.timerTotalAmount; 
+
   }
   private countDown(){
     //Get Difference Between the times
@@ -57,10 +63,15 @@ export class TimerService {
       this.isTimerRunning = false; 
       this.timerCurrentAmount = 0; 
     }else{
-      console.log("Timer: "+this.timerCurrentAmount); 
       this.timerCurrentAmount = Math.floor((timeLeft/1000)); 
     }
   }
+  public resetClock(){
+    this.stopTimer(); 
+    this.restartCountDownTime(); 
+
+  }
+
   ngOnDestroy(): void {
     this.timerSubscription.unsubscribe(); 
 }

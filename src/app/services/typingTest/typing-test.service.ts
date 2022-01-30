@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from  '@angular/common/http';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { TimerService } from '../timerService/timer.service';
 
 enum wordState{
@@ -23,6 +23,7 @@ export class TypingTestService {
   public currentWord: BehaviorSubject<string> = new BehaviorSubject<string>(""); 
   public currentWordNum: number; 
   public scrollby: number; 
+  public subs: Subscription; 
 
   //colors: 
   private ActiveCorrect_color = "background:rgba(224, 224, 224, 0.63);";
@@ -38,26 +39,23 @@ export class TypingTestService {
     [wordState.Correct]: this.Correct_color, 
     [wordState.Incorrect]: this.Incorrect_color
   }
-  constructor(private httpClient: HttpClient, public timerService: TimerService) { 
+  constructor(private httpClient: HttpClient, private timerService: TimerService) { 
     this.init()
   }
   private init(){
     //Declaration of words
     this.currentWordNum = 0; 
     this.scrollby = 0; 
+ 
+    //Get Random sentences
+    this.generateTestText(); 
 
     //subscribe to users current word
     this.currentWord.subscribe((value)=>{
       this.updateHTMLTextFormat(); 
     });  
 
-    //Get Random sentences
-    this.httpClient.get('assets/data/random.txt', { responseType: 'text' })
-    .subscribe(data => {
-      this.testText = this.generatedTestText(data)
-      this.paragraphWordState = this.generateParagraphWordStateAr(this.testText);
-      this.textReadyChange.next(true); 
-    });
+
   }
   private generatedTestText(_data:string){
     try{
@@ -72,11 +70,13 @@ export class TypingTestService {
         wordcount = testText.split(" ").length; 
       }   
       return testText;
+
     }catch(e){}
   
     return ""; 
   }
   private generateParagraphWordStateAr(_paragraph: string){
+
     let words = _paragraph.split(" ");
     let paragraphWordState: {word:string, state:wordState}[] = [];
     for(let i = 0; i < words.length; i++){   
@@ -85,7 +85,11 @@ export class TypingTestService {
 
     return paragraphWordState; 
   }
+  
   private updateHTMLTextFormat(){
+
+
+    console.log(this.currentWordNum); 
 
     //update color of the current word
     let isMatch = this.checkCurrentStrMarches(this.paragraphWordState[this.currentWordNum].word,this.currentWord.value); 
@@ -100,20 +104,6 @@ export class TypingTestService {
   private randomNumber(_min:number, _max:number){
     return Math.round(Math.random() * (_max - _min) + _min);
   }
-  public moveToNextWord(){
-    let wordCorrectness = this.checkCompletedStrMatch(this.paragraphWordState[this.currentWordNum].word, this.currentWord.value); 
-    if(wordCorrectness){
-      this.paragraphWordState[this.currentWordNum].state = wordState.Correct;
-    }else{
-      this.paragraphWordState[this.currentWordNum].state = wordState.Incorrect;
-    }
-  }
-  public startTimer(){
-    this.timerService.startTimer("Typing Service");
-  }
-  public getTimeStatus(){
-    return this.timerService.isTimerRunning; 
-  }
   private checkCompletedStrMatch(_word:string, _substrWord:string){
     if(_word === _substrWord){
       return true; 
@@ -121,7 +111,6 @@ export class TypingTestService {
     return false; 
   }
   private checkCurrentStrMarches(_word:string, _substrWord:string){
-    
     //Check Size
     if(_substrWord.length > _word.length){
       return false; 
@@ -137,6 +126,58 @@ export class TypingTestService {
       }
     }
     return true; 
+  }
+
+  private async generateTestText(){
+    //Get Random sentences      
+    this.subs = this.httpClient.get('assets/data/random.txt', { responseType: 'text' })
+    .subscribe(data => {
+      this.testText = this.generatedTestText(data)
+      this.paragraphWordState = this.generateParagraphWordStateAr(this.testText);
+      this.textReadyChange.next(true); 
+    });
+  }
+
+  private resetTestText(){
+
+    this.currentWordNum = 0; 
+    this.scrollby = 0;    
+    this.paragraphWordState = []; 
+    this.subs.unsubscribe(); 
+    
+    this.generateTestText(); 
+  }
+  public moveToNextWord(){
+    let wordCorrectness = this.checkCompletedStrMatch(this.paragraphWordState[this.currentWordNum].word, this.currentWord.value); 
+    if(wordCorrectness){
+      this.paragraphWordState[this.currentWordNum].state = wordState.Correct;
+    }else{
+      this.paragraphWordState[this.currentWordNum].state = wordState.Incorrect;
+    }
+  }
+
+  public async resetTest(){
+
+    console.log("----------- Before -----------"); 
+    console.log("Array: " +this.paragraphWordState.length); 
+    console.log("Word Number: "+this.currentWordNum); 
+    console.log("current Word: "+ this.currentWord.value); 
+
+    //Reset Timer
+    this.timerService.resetClock(); 
+    //Reset all Parts of the testing
+    await this.resetTestText(); 
+
+    console.log("----------- After -----------"); 
+    console.log("Array: " +this.paragraphWordState.length); 
+    console.log("Word Number: "+this.currentWordNum); 
+    console.log("current Word: "+ this.currentWord.value); 
+
+    
+    this.textReadyChange.next(true); 
+  }
+  public getTimerServiceInstatiation(){
+    return(this.timerService); 
   }
 
 }

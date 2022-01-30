@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, interval, InteropObservable} from 'rxjs';
 import { TimerService } from '../services/timerService/timer.service';
+import { TypingTestService } from '../services/typingTest/typing-test.service';
 
 @Component({
   selector: 'app-count-down',
@@ -9,7 +10,12 @@ import { TimerService } from '../services/timerService/timer.service';
 })
 export class CountDownComponent implements OnInit{
 
-  constructor(public timerService: TimerService){}
-  ngOnInit(): void {}
+  public timerService: TimerService; 
+
+  constructor(public typingTestService: TypingTestService){}
+  ngOnInit(): void {
+    //Get Time Service Instantiation
+    this.timerService = this.typingTestService.getTimerServiceInstatiation(); 
+  }
 
 }

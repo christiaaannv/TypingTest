@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TimerService } from '../services/timerService/timer.service';
-
+import { TypingTestService } from '../services/typingTest/typing-test.service';
 @Component({
   selector: 'app-count-down-dash',
   templateUrl: './count-down-dash.component.html',
@@ -9,7 +9,9 @@ import { TimerService } from '../services/timerService/timer.service';
 })
 export class CountDownDashComponent implements OnInit {
 
-  constructor(public timerService: TimerService) { }
+  public timerService: TimerService; 
+
+  constructor(public typingTestService: TypingTestService) { }
 
   onClick_updateTimer(_value:number)
   {
@@ -17,13 +19,24 @@ export class CountDownDashComponent implements OnInit {
 
   }
   onClick_startTimer(){
-    this.timerService.startTimer("From Start Button"); 
+    this.timerService.startTimer(); 
   }
 
+  onClick_reset(){
+
+    console.log("restart Test"); 
+    //First Stop Timer
+    this.typingTestService.resetTest();
+    //Setup new test scripts
+
+  }
   onClick_stopTimer(){
     this.timerService.stopTimer(); 
   }
   
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //Get Time Service Instantiation
+    this.timerService = this.typingTestService.getTimerServiceInstatiation(); 
+  }
 
 }
