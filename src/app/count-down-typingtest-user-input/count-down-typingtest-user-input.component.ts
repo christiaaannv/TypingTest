@@ -15,7 +15,7 @@ export class CountDownTypingtestUserInputComponent implements OnInit {
 
   public onInput_UserInput(_value:any){
 
-    if(this.typingTestService.currentWordNum == 0 && this.timerService.isTimerRunning == false){
+    if(this.typingTestService.currentWordIndex == 0 && this.timerService.isTimerRunning == false){
       this.timerService.startTimer(); 
     }
     if(_value.value == " " ||_value.value == "\n" ){
@@ -27,9 +27,9 @@ export class CountDownTypingtestUserInputComponent implements OnInit {
       
       _value.value = ""; 
       this.typingTestService.moveToNextWord(); 
-      this.typingTestService.currentWordNum++; 
+      this.typingTestService.currentWordIndex++; 
     }  
-    this.typingTestService.currentWord.next(_value.value); 
+    this.typingTestService.currentUserInputText.next(_value.value); 
   }
   ngOnInit(): void {
     //Get TimerService Instance 

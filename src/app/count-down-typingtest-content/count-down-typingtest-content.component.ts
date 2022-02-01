@@ -22,9 +22,8 @@ export class CountDownTypingtestContentComponent implements OnInit {
   public updateVerticalScrollLocation(_amount: number){
 
     let parent = this.scrollElement.nativeElement.offsetWidth; 
-    let child_offsetLeft = this.spans.get(this.typingTestService.currentWordNum)!.nativeElement.offsetLeft; 
-    let child_offsetTop = this.spans.get(this.typingTestService.currentWordNum)!.nativeElement.offsetTop; 
-
+    let child_offsetLeft = this.spans.get(this.typingTestService.currentWordIndex)?.nativeElement.offsetLeft; 
+    let child_offsetTop = this.spans.get(this.typingTestService.currentWordIndex)?.nativeElement.offsetTop; 
     //Regular Movement
     if(this.textArea_offsetWidth_tracker > child_offsetLeft && child_offsetTop > 24){
       this.scrollElement.nativeElement.scrollTop += 20; 
@@ -33,13 +32,17 @@ export class CountDownTypingtestContentComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.textArea_offsetWidth_tracker = 0; 
+  }
+  ngAfterViewInit(){
 
-    this.typingTestService.textReadyChange.subscribe((value) =>{
+    console.log("VIEW AFTER"); 
+    this.textArea_offsetWidth_tracker = 0; 
+    //
+    this.typingTestService.textReadyChange.subscribe(
+      (value) =>{
         this.updateVerticalScrollLocation(this.typingTestService.scrollby); 
     }); 
-
-
+    
   }
 
 }
