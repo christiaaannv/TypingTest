@@ -10,12 +10,12 @@ import { TypingTestService } from '../services/typingTest/typing-test.service';
 })
 export class CountDownComponent implements OnInit{
 
-  public timerService: TimerService; 
+  //public timerService: TimerService; 
 
-  constructor(public typingTestService: TypingTestService){}
+  constructor(public typingTestService: TypingTestService, public timerService: TimerService){}
   ngOnInit(): void {
     //Get Time Service Instantiation
-    this.timerService = this.typingTestService.getTimerServiceInstatiation(); 
+    //this.timerService = this.typingTestService.getTimerServiceInstatiation(); 
   }
 
 }

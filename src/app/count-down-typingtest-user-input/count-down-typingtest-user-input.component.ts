@@ -9,9 +9,9 @@ import { TimerService } from '../services/timerService/timer.service';
 })
 export class CountDownTypingtestUserInputComponent implements OnInit {
 
-  public timerService: TimerService; 
+  //public timerService: TimerService; 
 
-  constructor(public typingTestService: TypingTestService) { }
+  constructor(public typingTestService: TypingTestService, public timerService: TimerService) { }
 
   public onInput_UserInput(_value:any){
 
@@ -33,7 +33,7 @@ export class CountDownTypingtestUserInputComponent implements OnInit {
   }
   ngOnInit(): void {
     //Get TimerService Instance 
-    this.timerService = this.typingTestService.getTimerServiceInstatiation(); 
+    //this.timerService = this.typingTestService.getTimerServiceInstatiation(); 
   }
 
 

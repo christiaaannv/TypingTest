@@ -35,10 +35,10 @@ export class TimerService {
     console.log("Time Started"); 
     this.isTimerRunning = true; 
     this.endDate = new Date(new Date().getTime() + this.timerCurrentAmount*1000); 
+
     this.timerSubscription = interval(100).subscribe( x => 
       {
         this.countDown();
-        //console.log(_from)
       });  
   }
   public stopTimer(){
