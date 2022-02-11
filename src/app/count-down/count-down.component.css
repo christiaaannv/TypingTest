@@ -1,0 +1,12 @@
+.timer{
+  position: relative;
+  text-align: center;
+  border: 3px solid rgb(175, 174, 174);
+  border-radius: 5px;
+  background-color: white;
+  width: 100%;
+}
+
+.timer h1 {
+  margin: 0px;
+}

@@ -1,0 +1,7 @@
+<div style="text-align: center; height: auto;"> 
+    <div #scrollview class="textArea-testtext-box">
+        <p #testTextbox id="test-box" >
+            <span #words class="word span" *ngFor="let word of this.typingTestService.paragraphWordState" [style]="this.typingTestService.STATE_TO_COLOR[word.state]"  >{{word.word}}&nbsp;</span>
+        </p>
+    </div>
+</div>

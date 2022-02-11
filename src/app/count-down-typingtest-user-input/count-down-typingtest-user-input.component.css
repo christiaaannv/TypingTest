@@ -1,0 +1,14 @@
+.mat-text-box{
+    width: 40%; 
+    height: auto;
+    resize: none;
+    background-color: rgb(255, 255, 255);
+    margin: 0%;
+    padding: 0%;
+    border-radius: 5px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
